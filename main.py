@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import numpy as np
 from datetime import datetime
@@ -9,11 +10,32 @@ import seaborn as sns
 """
 PLANNED LAYOUT:
 1. Set-up
+    - data directory filepaths
+    - Global vars or data
 2. Subfunctions
 3. Main analysis function (and gradio version)
-4. Main menu
+4. Main menu & run script
 """
 
+### SET-UP
+
+#Get directory path to use for dataset file paths
+base_dir = os.path.dirname(os.path.abspath(__file__))
+data_dir = os.path.join(base_dir, "data")
+
+
+
+
+
+### Sub functions
+
+
+
+
+
+### Analysis function
+def dominance_analysis():
+     pass
 
 
 
