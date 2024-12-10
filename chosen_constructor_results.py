@@ -12,7 +12,8 @@ const_results = pd.read_csv(r'C:\\Documents\\PYTHON COURSE\\Python F1\\f1db_csv\
 const_standings = pd.read_csv(r'C:\\Documents\\PYTHON COURSE\\Python F1\\f1db_csv\\constructor_standings.csv')
 
 
-name = input('Please input the name of the constructor you would like to know about: ')
+#input constructors name
+name = input('Please input the name of the constructor you would like to know about: ') 
 
 
 if name not in const['name'].values: 
@@ -20,41 +21,31 @@ if name not in const['name'].values:
     constId = None
     
 else:
-    constId = const.loc[(const.name == name),['constructorId']]
+    # goes through const dataframe to match the name given with its 'constructor_id'
+    constId = const.loc[(const.name == name), ['constructorId']]
+    # turns the single-celled dataframe with const_id into an integer
+    constId_value = constId.values[0][0]
     
-     
+  
+   # input the upper and lower ranges for the time period 
     get_lower = int(input('Please insert the year of races you would like from: '))  # lower limit of range
     get_upper = int(input('Please insert the year of races you would like upto: '))  # upper limit of range
     
+    # this is an empty dataframe
     year_races = pd.DataFrame()
-    #race_count = []
-    # this is an enpty dataframe
     
     total_range = list(range(get_lower, get_upper+1))
     for i in total_range:
         year_races = pd.concat([year_races, races.loc[(races.year == i),['raceId']]])
+        # concatinates all the data from year year into one dataframe
     
-    # Extract the raceIds from the filtered races DataFrame
     raceIds = year_races['raceId']
     
-    # Filter constructor results based on the raceIds
+    # all_results: all the results of all the constructors from all the races during the given time range
     all_results = const_results[const_results['raceId'].isin(raceIds)][['raceId','constructorId','points']]
-    main_results = all_results[all_results['constructorId'].isin(constId)]
     
-    print(constId) # prints constructor id
-    
-    print(all_results) # prints all results
-    
+    # main_results: results of given constructor from all the races furing the given time range
+    main_results = all_results[all_results['constructorId']== constId_value]
+ 
     print(main_results) # prints results of the particular constructor id
-    
-    '''
-    if constId is not None:
-        # Now filter directly on the column
-        main_results = all_results[all_results['constructorId'] == constId]
-        print(main_results)
-    else:
-        print("Constructor ID not found. No results to display.")
-    '''  
-    
-
-    
+    #print(all_results) # prints all results
