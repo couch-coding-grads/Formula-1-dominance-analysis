@@ -29,6 +29,8 @@ const = pd.read_csv(os.path.join(data_dir, "constructors.csv"))
 const_results = pd.read_csv(os.path.join(data_dir, "constructor_results.csv"))
 const_standings = pd.read_csv(os.path.join(data_dir, "constructor_standings.csv"))
 
+#TO-DO: Point system declarations here?
+
 
 
 
@@ -48,6 +50,7 @@ def input_validation(name, start_year, end_year):
 
 
 def team_query():
+    # Componenents: get constructor results, get year/round from races, map year/round to time var
     
     pass
 
