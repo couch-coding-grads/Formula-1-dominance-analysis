@@ -49,9 +49,33 @@ def input_validation(name, start_year, end_year):
     return is_valid
 
 
-def team_query():
-    # Componenents: get constructor results, get year/round from races, map year/round to time var
+def team_query(constId, start_year, end_year):
+    # Componenents: get constructor results, map year/round to time var for plotting
     
+
+    # CONSTRUCTOR RESULTS
+    # Filter races by year (we'll also use this later to calc the total rounds and time mapping)
+    filtered_races = races.loc[(races['year'] >= start_year) & (races['year'] <= end_year), 
+                               ['raceId', 'year', 'round']]
+    print("\n", filtered_races.head())
+
+    # const_results doesn't hold year and round data, so first we merge it with filtered races
+    merged_results = const_results.merge(races[['raceId', 'year', 'round',]], on = 'raceId', how = 'left')
+
+    # then we filter for the desired constructor
+    filtered_results = merged_results[(merged_results['constructorId'] == constId)]
+    # remove unwanted 'status' column
+    filtered_results = filtered_results.drop(columns = ['status'])
+    print('\n', filtered_results.head())
+    
+    
+
+    # TIME-MAPPING
+    # year_fraction is an intuitive way of distributing rounds across years on a plot graph
+    # We calculate this by doing the year + (the round number - 1, divided by the number of rounds)
+
+
+
     pass
 
 
@@ -63,17 +87,17 @@ def dominance_analysis():
     is_valid = False
     while is_valid != True:
         name = input("Please enter constructor name: ")
-        start_year = input("Please enter starting year for analysis range: ")
-        end_year = input("Please enter ending year of analysis range: ")
+        start_year = int(input("Please enter starting year for analysis range: "))
+        end_year = int(input("Please enter ending year of analysis range: "))
 
         is_valid = input_validation(name, start_year, end_year)
     
 
 
-    # Get constructorID
-    constId = const.loc[(const.name == name), ["constructorId"]]
-    #We just want the value, not a dataframe object
-    constId = constId.values[0][0]
+    # Get constructorId
+    constId = const.loc[const["name"] == name, "constructorId"].values[0]
+    #We just want the value, not a dataframe object.
+    #constId = constId.values[0][0]
     print("{0} has constructor ID: {1}".format(name, constId))
 
 
@@ -143,7 +167,7 @@ def main():
 
 ### RUN SCRIPT
 if __name__ == "__main__":
-    main()
+    #main()
     # Or directly launch analysis/gradio UI here
     dominance_analysis()
 

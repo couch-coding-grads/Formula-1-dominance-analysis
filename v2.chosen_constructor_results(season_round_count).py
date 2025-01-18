@@ -4,17 +4,32 @@ Created on Thu Dec 12 15:02:02 2024
 
 @author: pareshdokka
 """
-
+import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import requests
 
-
+'''
 races = pd.read_csv(r'C:\\Documents\\PYTHON COURSE\\Python F1\\f1db_csv\\races.csv')
 const = pd.read_csv(r'C:\\Documents\\PYTHON COURSE\\Python F1\\f1db_csv\\constructors.csv')
 const_results = pd.read_csv(r'C:\\Documents\\PYTHON COURSE\\Python F1\\f1db_csv\\constructor_results.csv')
 const_standings = pd.read_csv(r'C:\\Documents\\PYTHON COURSE\\Python F1\\f1db_csv\\constructor_standings.csv')
+'''
+
+### SET-UP
+
+# Get directory path to use for dataset file paths
+base_dir = os.path.dirname(os.path.abspath(__file__))
+data_dir = os.path.join(base_dir, "data")
+
+# Load data
+races = pd.read_csv(os.path.join(data_dir, "races.csv"))
+const = pd.read_csv(os.path.join(data_dir, "constructors.csv"))
+const_results = pd.read_csv(os.path.join(data_dir, "constructor_results.csv"))
+const_standings = pd.read_csv(os.path.join(data_dir, "constructor_standings.csv"))
+
+
 
 #input constructors name
 name = input('Please input the name of the constructor you would like to know about: ') 
@@ -56,6 +71,7 @@ while True:
     
                 race_count = pd.DataFrame(year_races)      
                 race_count['year_fraction'] = races['year']+races['round']/races.groupby('year')['round'].transform('max')
+                ##### Q: why races? why not year_races? it was filtered after all
     
                 raceIds = year_races['raceId']
     
