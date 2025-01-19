@@ -4,7 +4,7 @@ This is project aims to allow a visual analysis of an F1 team's "dominance" or c
 
 This is a project by Taha Majid and Paresh Dokka. The basic idea started with a simple linear R script that was written a few years ago for a Sports Economics essay analysing competitive balance in F1. It used points scored by a team in races to illustrate their dominance, and we've decided to build this idea in Python and flesh it out into a program to allow more custom visualisations, features, and an actual interface.
 
-![old R script example output visualisation](docs/old R export percpoints.jpg)
+![old R script example output visualisation](/docs/old R export percpoints.jpg)
 
 # Development
 
@@ -14,7 +14,7 @@ The usage of the program is simple and straight forward- for a given range of ye
 
 We also wanted to create a more friendly (graphical) interface for the program- this is done via Gradio. We hope to adapt the regular analysis functions into a Gradio web UI, with a concept for the design given below.
 
-![pic of gr interface concept 2](docs/gr interface concept 2.png)
+![pic of gr interface concept 2](/docs/gr interface concept 2.png)
 
 ## Features
 
