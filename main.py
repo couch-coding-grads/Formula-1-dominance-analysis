@@ -40,13 +40,24 @@ const_standings = pd.read_csv(os.path.join(data_dir, "constructor_standings.csv"
 def input_validation(name, start_year, end_year):
     is_valid = False
 
-    # Make sure name is capitalised first letter only
-    # Check if team constructor name is correct, if years are in range and right way around
+    # Check if the name given is in the constructors
+        
+    # .str: converts value into string
+    # .contains: checks if given value is in the datalist
+    # .any(): returns true even if there is a single true match
 
-    #For now, just pass true
-    is_valid = True
-     
-    return is_valid
+    if const['name'].str.lower().str.contains(name.lower()).any():
+        if (start_year < 1950) or (end_year > 2024) or (start_year > end_year):
+            # Three checks, and all have to be true to be valid
+            
+            print('Invalid range, Please make sure to give a valid range')
+        else:
+            is_valid = True
+
+    else:
+        print('No match found')
+
+    return is_valid       
 
 
 def team_query(constId, start_year, end_year):
