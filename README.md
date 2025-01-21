@@ -22,8 +22,8 @@ This is the current map of features for the project:
 
 - Data Manipulation
     - [x] Dataset Querying
-    - [ ] Time-mapping variable
-    - [ ] Input Validation
+    - [x] Time-mapping variable
+    - [x] Input Validation
     - [ ] Identification system for Sprints, different point systems, anomalies
 
 - Analysis
