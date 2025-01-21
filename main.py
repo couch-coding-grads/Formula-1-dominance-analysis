@@ -47,6 +47,8 @@ def input_validation(name, start_year, end_year):
     # .any(): returns true even if there is a single true match
 
     if const['name'].str.lower().str.contains(name.lower()).any():
+
+        # Now check if year range is valid
         if (start_year < 1950) or (end_year > 2024) or (start_year > end_year):
             # Three checks, and all have to be true to be valid
             
@@ -61,29 +63,33 @@ def input_validation(name, start_year, end_year):
 
 
 def team_query(constId, start_year, end_year):
-    # Componenents: get constructor results, map year/round to time var for plotting
-    
+    # Componenents: get constructor results, map year/round to time var for plotting, get point systems
+    '''N.B while handling data: The datasets themselves are global variables remember, don't change them directly'''
 
-    # CONSTRUCTOR RESULTS
-    # Filter races by year (we'll also use this later to calc the total rounds and time mapping)
-    filtered_races = races.loc[(races['year'] >= start_year) & (races['year'] <= end_year), 
-                               ['raceId', 'year', 'round']]
-    print("\n", filtered_races.head())
 
-    # const_results doesn't hold year and round data, so first we merge it with filtered races
-    merged_results = const_results.merge(races[['raceId', 'year', 'round',]], on = 'raceId', how = 'left')
+    # 1) CONSTRUCTOR RESULTS
+    # Approach: we first filter down const_results as it is huge,
+    # THEN we can merge races into it (const_results doesnt have year/round data on its own),
+    # then filter for year & remove unnecessary columns
 
-    # then we filter for the desired constructor
-    filtered_results = merged_results[(merged_results['constructorId'] == constId)]
-    # remove unwanted 'status' column
-    filtered_results = filtered_results.drop(columns = ['status'])
-    print('\n', filtered_results.head())
-    
-    
+    # Filter constructor results by constructor ID into target dataframe
+    results_query = const_results[(const_results['constructorId'] == constId)]
+    # Add in year/round data from races
+    results_query = results_query.merge(races[['raceId', 'year', 'round']], on = 'raceId', how = 'left')
+    # Filter for desired year range
+    results_query = results_query.loc[(results_query['year'] >= start_year) & (results_query['year'] <= end_year)]
+    # Remove unwanted 'status' column
+    results_query = results_query.drop(columns = ['status'])
+    print('\n', results_query.head())
 
-    # TIME-MAPPING
+
+    # 2) TIME-MAPPING
+    # To be able to plot race results on a time graph, we come up with 'year_fraction', a more "continuous" variable to combine seasons and rounds
     # year_fraction is an intuitive way of distributing rounds across years on a plot graph
-    # We calculate this by doing the year + (the round number - 1, divided by the number of rounds)
+    # We calculate this by doing the year + (the round number - 1, divided by total number of rounds)
+
+    results_query['year_fraction'] = (results_query['year'] + ((results_query['round'] - 1) / (results_query.groupby('year')['round'].transform('max'))))
+    print('\n', results_query.head())
 
 
 
@@ -114,6 +120,7 @@ def dominance_analysis():
 
 
     # Query data
+    '''Name needs changing'''
     temp_dataframe = team_query(constId, start_year, end_year)
 
 
